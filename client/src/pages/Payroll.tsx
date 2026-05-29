@@ -77,34 +77,23 @@ const Payroll: React.FC = () => {
   };
 
   const handleRunBulkPayroll = async () => {
-    if (!window.confirm(`Are you sure you want to run bulk payroll calculations for ALL active employees for the month ${month}/${year}? This will generate and stream a ZIP containing all payslip PDFs.`)) return;
+    if (!window.confirm(`Are you sure you want to run bulk payroll calculations for ALL active employees for the month ${month}/${year}? This will generate and dispatch payslips for everyone.`)) return;
     setIsBulkProcessing(true);
     try {
       const response = await api.post('/payroll/run-all', {
         month: parseInt(month),
         year: parseInt(year)
-      }, {
-        responseType: 'blob'
       });
       
-      const blob = new Blob([response.data], { type: 'application/zip' });
-      const url = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `payslips-bulk-${month}-${year}.zip`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-      
-      alert(`Bulk payroll calculations complete! ${employees.length} payslips successfully generated, zipped, and downloaded to your computer.`);
+      const count = response.data.data?.count || 0;
+      alert(`Bulk payroll calculations complete! Successfully generated and dispatched ${count} payslips for this month. Employees can now download their individual payslips from the CTC list.`);
       
       if (selectedEmployee) {
         loadHistory(selectedEmployee.id);
       }
     } catch (err: any) {
       console.error(err);
-      alert('Error executing bulk payroll and download.');
+      alert('Error executing bulk payroll calculation.');
     } finally {
       setIsBulkProcessing(false);
     }
