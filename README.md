@@ -343,7 +343,6 @@ antbox-hrms/
 │   ├── railway.json                 Railway deployment config
 │   └── .env.example
 └── README.md
-```
 
 ---
 
