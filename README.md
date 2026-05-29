@@ -349,6 +349,6 @@ antbox-hrms/
 
 ## Built By
 
-Ant Box Internal Engineering
+Vaidehi Parashar
 Platform Version: 1.0.0
 Last Updated: May 2026
